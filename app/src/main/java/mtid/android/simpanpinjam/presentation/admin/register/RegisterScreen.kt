@@ -73,10 +73,12 @@ fun RegisterScreen(
     val confirmpassword = remember { mutableStateOf(TextFieldValue()) }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     val simpananPokok = remember { mutableStateOf(TextFieldValue()) }
+    val basewajib = remember { mutableStateOf(TextFieldValue()) }
+    val basesukarela= remember { mutableStateOf(TextFieldValue()) }
 
     fun validate() : Boolean{
         return username.value.text.isNotEmpty() && password.value.text.isNotEmpty() && confirmpassword.value.text.isNotEmpty()
-                && simpananPokok.value.text.isNotEmpty()
+                && simpananPokok.value.text.isNotEmpty() && basewajib.value.text.isNotEmpty() && basesukarela.value.text.isNotEmpty()
     }
 
     // ViewModel
@@ -175,6 +177,30 @@ fun RegisterScreen(
             )
 
             Spacer(modifier = Modifier.height(20.dp))
+
+            OutlinedTextField(
+                label = { Text(text = "Nilai Simpanan Wajib") },
+                value = basewajib.value,
+                onValueChange = { basewajib.value = it
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number
+                ),
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            OutlinedTextField(
+                label = { Text(text = "Nilai Simpanan Sukarela") },
+                value = basesukarela.value,
+                onValueChange = { basesukarela.value = it
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number
+                ),
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
             Box(modifier = Modifier.padding(40.dp, 20.dp, 40.dp, 0.dp)) {
                 Button(
                     onClick = {
@@ -182,7 +208,8 @@ fun RegisterScreen(
                         if(validate()){
                             viewModel.register(
                                 username.value.text,
-                                password.value.text, confirmpassword.value.text, simpananPokok.value.text.toIntOrNull(), usersLogins
+                                password.value.text, confirmpassword.value.text, simpananPokok.value.text.toLongOrNull(), usersLogins,
+                                basewajib.value.text.toLongOrNull(), basesukarela.value.text.toLongOrNull()
                             )
                         }
                         else{
