@@ -11,4 +11,5 @@ data class LogSimpanan(
     val simpananwajib: Long? = 0,
     val simpanansukarela: Long? = 0,
     val simpananharkop : Long? = 0,
+    val simpananqurban : Long? = 0
 )

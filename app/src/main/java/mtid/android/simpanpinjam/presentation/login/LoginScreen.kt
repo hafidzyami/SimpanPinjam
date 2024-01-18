@@ -51,8 +51,6 @@ fun LoginScreen(
     supabase: Supabase,
     navController : NavController
 ){
-
-    Log.d("test", "test3")
     val viewModel = viewModel<LoginViewModel>(
         factory = object : ViewModelProvider.Factory{
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -129,7 +127,7 @@ fun LoginScreen(
                     navController.navigate("adminhome")
                 }
                 else{
-                    navController.navigate("userhome/${username.value.text}")
+                    navController.navigate("simpanan/${username.value.text}")
                 }
                 Toast.makeText(LocalContext.current, "Login Successful!", Toast.LENGTH_SHORT).show()
             }

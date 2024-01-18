@@ -43,6 +43,7 @@ import androidx.navigation.NavController
 import mtid.android.simpanpinjam.data.remote.Supabase
 import mtid.android.simpanpinjam.presentation.admin.editanggota.EditAnggotaViewModel
 import mtid.android.simpanpinjam.presentation.admin.navbar.NavbarAdminScreen
+import mtid.android.simpanpinjam.presentation.functions.formatNumber
 
 @Composable
 fun EditSimpananScreen(
@@ -79,9 +80,11 @@ fun EditSimpananScreen(
         var wajib by rememberSaveable{ mutableStateOf(simpanan?.simpananwajib ?: 0L) }
         var sukarela by rememberSaveable { mutableStateOf(simpanan?.simpanansukarela ?: 0L) }
         var harkop by rememberSaveable { mutableStateOf(simpanan?.simpananharkop ?: 0L) }
+        var qurban by rememberSaveable { mutableStateOf(simpanan?.simpananqurban ?: 0L) }
         var tambahHarkop by rememberSaveable { mutableStateOf(0L) }
-        var isEdit by rememberSaveable { mutableStateOf(true) }
+        var tambahQurban by rememberSaveable { mutableStateOf(0L) }
         var isClicked by remember{ mutableStateOf(false) }
+
 
         if(isClicked){
             isClicked = false
@@ -108,10 +111,10 @@ fun EditSimpananScreen(
                     )
                     OutlinedTextField(
                         label = { Text(text = "Total Simpanan Pokok") },
-                        value = pokok.toString(),
+                        value ="Rp " + formatNumber( pokok),
                         onValueChange = { if(it.isNullOrBlank()) pokok = 0L else pokok = it.toLong()},
                         modifier = Modifier.fillMaxWidth(),
-                        readOnly = isEdit,
+                        readOnly = true,
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number
                         ),
@@ -119,11 +122,11 @@ fun EditSimpananScreen(
                     Spacer(modifier = Modifier.height(20.dp))
                     OutlinedTextField(
                         label = { Text(text = "Total Simpanan Wajib") },
-                        value = wajib.toString(),
+                        value ="Rp " + formatNumber( wajib),
                         onValueChange = { if(it.isNullOrBlank()) wajib = 0L else wajib = it.toLong() },
                         modifier = Modifier.fillMaxWidth(),
-                        readOnly = isEdit,
-                        supportingText = {Text(text = "Nilai per Bulan: Rp " +  simpanan?.basewajib.toString())},
+                        readOnly = true,
+                        supportingText = {Text(text = "Nilai per Bulan: Rp " +  formatNumber(simpanan?.basewajib ?: 0L))},
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number
                         ),
@@ -136,11 +139,11 @@ fun EditSimpananScreen(
 
                     OutlinedTextField(
                         label = { Text(text = "Total Simpanan Sukarela") },
-                        value = sukarela.toString(),
+                        value ="Rp " + formatNumber( sukarela),
                         onValueChange = { if(it.isNullOrBlank()) sukarela = 0L else sukarela = it.toLong() },
                         modifier = Modifier.fillMaxWidth(),
-                        readOnly = isEdit,
-                        supportingText = {Text(text = "Nilai per Bulan: Rp " +  simpanan?.basesukarela.toString())},
+                        readOnly = true,
+                        supportingText = {Text(text = "Nilai per Bulan: Rp " +  formatNumber(simpanan?.basesukarela ?: 0L))},
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number
                         ),
@@ -150,13 +153,12 @@ fun EditSimpananScreen(
                         Text(text = "Tambah")
                     }
                     Spacer(modifier = Modifier.height(20.dp))
-
                     OutlinedTextField(
                         label = { Text(text = "Total Simpanan Harkop") },
-                        value = harkop.toString(),
+                        value ="Rp " + formatNumber(harkop),
                         onValueChange = { if(it.isNullOrBlank()) harkop = 0L else harkop = it.toLong() },
                         modifier = Modifier.fillMaxWidth(),
-                        readOnly = isEdit,
+                        readOnly = true,
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number
                         ),
@@ -167,7 +169,7 @@ fun EditSimpananScreen(
                             .padding(top = 15.dp)
                     ){
                         OutlinedTextField(
-                            label = { Text(text = "Tambah Total Harkop") },
+                            label = { Text(text = "Tambah Simpanan Harkop") },
                             value = tambahHarkop.toString(),
                             onValueChange = { if(it.isNullOrBlank()) tambahHarkop= 0L else tambahHarkop = it.toLong() },
                             modifier = Modifier.weight(2f),
@@ -181,25 +183,46 @@ fun EditSimpananScreen(
                         }
                     }
                     Spacer(modifier = Modifier.height(20.dp))
+                    OutlinedTextField(
+                        label = { Text(text = "Total Simpanan Qurban") },
+                        value ="Rp " + formatNumber(qurban),
+                        onValueChange = { if(it.isNullOrBlank()) qurban = 0L else qurban = it.toLong() },
+                        modifier = Modifier.fillMaxWidth(),
+                        readOnly = true,
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Number
+                        ),
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 15.dp)
+                    ){
+                        OutlinedTextField(
+                            label = { Text(text = "Tambah Simpanan Qurban") },
+                            value = tambahQurban.toString(),
+                            onValueChange = { if(it.isNullOrBlank()) tambahQurban = 0L else tambahQurban  = it.toLong() },
+                            modifier = Modifier.weight(2f),
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                keyboardType = KeyboardType.Number
+                            ),
+                        )
+                        Button(onClick = {qurban = (qurban?: 0L) + (tambahQurban)},
+                            modifier = Modifier.padding(16.dp)) {
+                            Text(text = "Tambah")
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .align(Alignment.CenterHorizontally)
                     ){
                         Button(
-                            onClick = {isEdit = !isEdit},
+                            onClick = {viewModel.updateData(pokok, wajib, sukarela, harkop, qurban).also { isClicked = true }},
                             modifier = Modifier
                                 .weight(1f)
-                                .padding(end = 8.dp),
-
-                        ) {
-                            Text(text = if(isEdit) "Edit" else "Cancel Edit")
-                        }
-                        Button(
-                            onClick = {viewModel.updateData(pokok, wajib, sukarela, harkop).also { isClicked = true }},
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(start = 8.dp),
+                                .padding(20.dp),
                         ) {
                             Text(text = "Update")
                         }

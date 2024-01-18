@@ -1,6 +1,7 @@
 package mtid.android.simpanpinjam.presentation.admin.editanggota
 
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -48,6 +50,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import mtid.android.simpanpinjam.data.remote.Supabase
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
+import mtid.android.simpanpinjam.R
 import mtid.android.simpanpinjam.presentation.admin.navbar.NavbarAdminScreen
 
 @Composable
@@ -97,7 +102,6 @@ fun EditAnggotaScreen(
             isUpdate = false
             navController.navigate("adminhome")
         }
-
         Column(
         ) {
             Box(modifier = Modifier

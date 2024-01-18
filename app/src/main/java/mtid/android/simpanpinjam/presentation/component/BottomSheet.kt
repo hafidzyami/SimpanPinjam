@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AttachMoney
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Money
+import androidx.compose.material.icons.filled.MoneyOff
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -52,6 +54,10 @@ fun BottomSheet(username : String, navController: NavController ,onDismiss: () -
                 username = username, text = "Edit Data Anggota", imageVector = Icons.Filled.AccountCircle)
             BottomSheetItem(navController = navController, route = "editsimpanan",
                 username = username, text = "Edit Data Simpanan", imageVector = Icons.Filled.Money)
+            BottomSheetItem(navController = navController, route = "historysimpanan",
+                username = username, text = "Lihat History Simpanan", imageVector = Icons.Filled.History)
+            BottomSheetItem(navController = navController, route = "cicilan",
+                username = username, text = "Lihat Data Pinjaman", imageVector = Icons.Filled.MoneyOff)
             Spacer(modifier = Modifier.height(40.dp))
         }
     }
@@ -64,7 +70,10 @@ fun BottomSheetItem(navController: NavController, route : String, username : Str
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                navController.navigate("${route}/${username}")
+                if(route == "historysimpanan" || route =="cicilan"){
+                    navController.navigate("${route}/${username}/True")
+                }
+                else  navController.navigate("${route}/${username}")
             }
     ){
         Icon(imageVector = imageVector, contentDescription = null)

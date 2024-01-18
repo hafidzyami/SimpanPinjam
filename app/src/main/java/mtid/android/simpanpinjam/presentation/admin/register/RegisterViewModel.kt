@@ -37,7 +37,7 @@ class RegisterViewModel(
         }
     }
 
-    fun register(username : String, password : String, cpassword : String, simpananPokok : Long?,
+    fun register(username : String, password : String, cpassword : String,
                  users : List<UsersLogin>, basewajib : Long?, basesukarela : Long?){
         val matchingUser = users.find { it.username == username}
         if(matchingUser != null){
@@ -53,7 +53,7 @@ class RegisterViewModel(
                 viewModelScope.launch {
                     val data = UsersLogin(username = username, password =  password, isAdmin = false)
                     val dataAnggota = Anggota(username = username)
-                    val dataSimpanan = Simpanan(username = username, simpananpokok = simpananPokok,
+                    val dataSimpanan = Simpanan(username = username, simpananpokok = 250000,
                         basewajib = basewajib, basesukarela = basesukarela)
                     val client = supabase.client
                     client.from("UsersLogin").insert(data)

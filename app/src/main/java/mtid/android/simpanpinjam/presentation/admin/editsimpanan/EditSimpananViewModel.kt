@@ -31,7 +31,7 @@ class EditSimpananViewModel(
         }
     }
 
-    fun updateData(pokok : Long, wajib : Long, sukarela : Long, harkop : Long){
+    fun updateData(pokok : Long, wajib : Long, sukarela : Long, harkop : Long, qurban : Long){
         viewModelScope.launch {
             client.from("Simpanan").update(
                 {
@@ -39,6 +39,7 @@ class EditSimpananViewModel(
                     set("simpananwajib", wajib)
                     set("simpanansukarela", sukarela)
                     set("simpananharkop", harkop)
+                    set("simpananqurban", qurban)
                 }
             ){
                 select()
@@ -46,14 +47,15 @@ class EditSimpananViewModel(
                     eq("username", username)
                 }
             }
-            val formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy")
+            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
             val date = LocalDateTime.now().format(formatter)
             val bedapokok = pokok - (simpanan[0].simpananpokok ?: 0L)
             val bedawajib = wajib - (simpanan[0].simpananwajib ?: 0L)
             val bedasukarela = sukarela - (simpanan[0].simpanansukarela ?: 0L)
             val bedaharkop = harkop - (simpanan[0].simpananharkop ?: 0L)
+            val bedaqurban = qurban - (simpanan[0].simpananqurban ?: 0L)
             val log = LogSimpanan(username = username, tanggal = date, simpananharkop = bedaharkop,
-                simpanansukarela = bedasukarela, simpananpokok = bedapokok, simpananwajib = bedawajib)
+                simpanansukarela = bedasukarela, simpananpokok = bedapokok, simpananwajib = bedawajib, simpananqurban = bedaqurban)
             client.from("LogSimpanan").insert(log)
         }
     }

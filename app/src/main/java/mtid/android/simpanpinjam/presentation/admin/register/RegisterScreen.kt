@@ -72,13 +72,12 @@ fun RegisterScreen(
     val password = remember { mutableStateOf(TextFieldValue()) }
     val confirmpassword = remember { mutableStateOf(TextFieldValue()) }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
-    val simpananPokok = remember { mutableStateOf(TextFieldValue()) }
     val basewajib = remember { mutableStateOf(TextFieldValue()) }
     val basesukarela= remember { mutableStateOf(TextFieldValue()) }
 
     fun validate() : Boolean{
         return username.value.text.isNotEmpty() && password.value.text.isNotEmpty() && confirmpassword.value.text.isNotEmpty()
-                && simpananPokok.value.text.isNotEmpty() && basewajib.value.text.isNotEmpty() && basesukarela.value.text.isNotEmpty()
+                && basewajib.value.text.isNotEmpty() && basesukarela.value.text.isNotEmpty()
     }
 
     // ViewModel
@@ -168,12 +167,12 @@ fun RegisterScreen(
 
             OutlinedTextField(
                 label = { Text(text = "Nilai Simpanan Pokok") },
-                value = simpananPokok.value,
-                onValueChange = { simpananPokok.value = it
-                },
+                value = "Rp 250.000",
+                onValueChange = {},
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Number
                 ),
+                readOnly = true
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -208,7 +207,7 @@ fun RegisterScreen(
                         if(validate()){
                             viewModel.register(
                                 username.value.text,
-                                password.value.text, confirmpassword.value.text, simpananPokok.value.text.toLongOrNull(), usersLogins,
+                                password.value.text, confirmpassword.value.text, usersLogins,
                                 basewajib.value.text.toLongOrNull(), basesukarela.value.text.toLongOrNull()
                             )
                         }
